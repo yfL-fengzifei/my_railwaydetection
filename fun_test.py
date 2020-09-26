@@ -39,10 +39,75 @@ import numpy as np
 # cv2.waitKey(0)
 
 #=====================================================sobel测试
+# src_img=cv2.imread('./data_images/385.jpg')
+# # cv2.imshow('src',src_img)
+# gray_img=cv2.cvtColor(src_img,cv2.COLOR_RGB2GRAY)
+# # cv2.imshow('gray',gray_img)
+# sobel_img=cv2.Sobel(gray_img,cv2.CV_64F,1,0)
+# # sobel_img=cv2.Sobel(gray_img,-1,1,0)
+# # sobel_img=cv2.Sobel(gray_img,-1,0,1)
+# # cv2.imshow('soble',sobel_img)
+# # cv2.imshow('sobel 2',cv2.Sobel(gray_img,-1,1,0))
+# sobel_imginv=cv2.convertScaleAbs(sobel_img)
+# cv2.imshow('sobel inv',sobel_imginv)
+#
+# # abs_sobel=np.absolute(sobel_img)
+# # scaled_sobel=np.uint8(255*abs_sobel/np.max(abs_sobel))
+# # cv2.imshow('scaled',scaled_sobel)
+#
+# binary_img=np.zeros_like(sobel_imginv)
+# print('pass')
+# binary_img[(sobel_imginv>=90)&(sobel_imginv<=280)]=255 #参考代码给的是1 我觉得是255
+# cv2.imshow('binary',binary_img)
+
+#=====================================================梯度幅值、方向计算测试
+# src_img=cv2.imread('./data_images/385.jpg')
+# gry_img=cv2.cvtColor(src_img,cv2.COLOR_RGB2GRAY)
+# sobelx=cv2.Sobel(gry_img,cv2.CV_64F,1,0)
+# sobely=cv2.Sobel(gry_img,cv2.CV_64F,0,1)
+# grad_meg=np.sqrt(sobelx**2+sobely**2)
+# grad_meg2=cv2.magnitude(sobelx,sobely)
+#
+# grad_meg3=cv2.convertScaleAbs(grad_meg2)
+# factor=np.max(grad_meg2)/255
+# grad_mag4=(grad_meg2/factor).astype(np.uint8)
+#
+# binary_mag = np.zeros_like(grad_mag4)
+# binary_mag2 = np.zeros_like(grad_mag4)
+# binary_mag[(grad_mag4 >= 30) & (grad_mag4 <= 170)] = 255  # 参考代码中给的是1，我觉得应该是255
+# binary_mag2[(grad_mag4 >= 30) & (grad_mag4 <= 170)] = 1  # 参考代码中给的是1，我觉得应该是255
+# # cv2.imshow('meg',grad_meg3)
+# # cv2.imshow('meg2',grad_mag4)
+# cv2.imshow('bin mag',binary_mag)
+# cv2.imshow('bin mag2',binary_mag2)
+#
+#
+#
+# # grad_dir=cv2.phase(sobelx,sobely)
+# # grad_dir2=cv2.phase(np.absolute(sobelx),np.absolute(sobely))
+# absgraddir=np.arctan2(np.absolute(sobely),np.absolute(sobelx))
+# binary_dir=np.zeros_like(absgraddir)
+# binary_dir2=np.zeros_like(absgraddir)
+# binary_dir[(absgraddir>=0.7)&(absgraddir<=1.3)]=255
+# binary_dir2[(absgraddir>=0.7)&(absgraddir<=1.3)]=1
+#
+# # cv2.imshow('dir',binary_dir)
+# # cv2.imshow('dir2',binary_dir2)
+# # cv2.imshow('grad',grad_meg2)
+#
+# # bin=np.zeros((100,100))
+# # bin2=np.zeros((100,100))
+# # bin[0:50,:]=1
+# # bin2[0:50,:]=255
+# #
+# # cv2.imshow('1',bin)
+# # cv2.imshow('2',bin2)
+
+#=====================================================颜色空间
 src_img=cv2.imread('./data_images/385.jpg')
-# cv2.imshow('src',src_img)
-gray_img=cv2.cvtColor(src_img,cv2.COLOR_RGB2GRAY)
-cv2.imshow('gray',gray_img)
+hls_img=cv2.cvtColor(src_img,cv2.COLOR_RGB2HLS)
+cv2.imshow('hls',hls_img)
+
 
 cv2.waitKey(0)
 print('pass')
