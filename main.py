@@ -12,14 +12,12 @@ def main(imgs):
     left_line=line.line()
     #右轨道
     right_line=line.line()
-
+    #透视变换与逆透视变换
     M,Minv=get_M_Minv()
-
-
 
     #处理图像
     for img in imgs:
-        processing(img)
+        processing(img,M,Minv,left_line,right_line)
         pass
 
 
@@ -32,10 +30,10 @@ if __name__=="__main__":
     imgs=[cv2.imread(img_path) for img_path in img_paths] #cv2读取的是numpy的格式,imgs[0].shpe=(h,w,c)
 
     # cv2.namedWindow('original img',cv2.WINDOW_AUTOSIZE)
-    for img in imgs:
-        cv2.imshow('original img',img)
-        #time.sleep(5)
-        cv2.waitKey(1000) #按顺序显示
+    # for img in imgs:
+    #     cv2.imshow('original img',img)
+    #     #time.sleep(5)
+    #     cv2.waitKey(1000) #按顺序显示
 
     main(imgs)
 
