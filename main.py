@@ -18,7 +18,7 @@ def main(imgs):
     #处理图像
     for img in imgs:
         processing(img,M,Minv,left_line,right_line)
-        pass
+        return
 
 
 if __name__=="__main__":
@@ -37,5 +37,5 @@ if __name__=="__main__":
 
     main(imgs)
 
-    print('pass')
+    print('done')
     #main()

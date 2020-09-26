@@ -3,6 +3,7 @@ import numpy as np
 class line():
     def __init__(self):
         #was the line detected in the last iteration?
+        #在最后一些迭代中是否检测
         self.detected=False
         #x values of the last n fits of the line
         self.recent_fitted=[np.array([False])]
@@ -19,6 +20,16 @@ class line():
         #x value for detected line pixels
         self.allx=None
         #y value for detected line pixels
+        self.ally=None
 
-    pass
+
+def find_line(bird_img):
+    """
+    :param bird_img:
+    :return:
+    """
+
+
+
+
 
