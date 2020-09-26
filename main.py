@@ -37,5 +37,5 @@ if __name__=="__main__":
 
     main(imgs)
 
-    print('done')
+    # print('done')
     #main()

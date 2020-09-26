@@ -126,6 +126,19 @@ import numpy as np
 #
 # cv2.waitKey(0)
 
+#=====================================================计算直方图,不对
+# src_img=cv2.imread('./data_images/bird_view.jpg',0)
+# # cv2.imshow('src',src_img)
+# # cv2.waitKey(0)
+# mask_img=np.zeros_like(src_img)
+# mask_img[mask_img.shape[0]//2:,:]=255
+# # cv2.namedWindow('mask',cv2.WINDOW_NORMAL)
+# # cv2.imshow('mask',mask_img)
+# # cv2.waitKey(0)
+# hist=cv2.calcHist(src_img,0,mask_img,1,[0,1])
+
+
+
 
 print('pass')
 
