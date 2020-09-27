@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import os
+from PIL import Image
 
 from threshold_process import *
 from line import *
@@ -42,10 +43,25 @@ def processing(img,M,Minv,left_line,right_line):
 
     #执行检测
     #一开始在main中对轨道进行了初始化，初始化的时候 line.detected=False
+    #所以在第一步的时候，直接执行的是else
     if left_line.detected and right_line.detected:
         left_fit,right_fit,left_lane_inds,right_lane_inds=find_line_by_previous(bird_img,left_line.current_fit,right_line.current_fit)
     else:
         left_fit,right_fit,left_lane_inds,right_lane_inds=find_line(bird_img)
-    find_line(bird_img)
+
+    #更新拟合
+    left_line.undate(left_fit)
+    right_line.update(right_fit)
+    #在第一次之后，进行更新
+    # self.best_fit = fit
+    # self.current_fit = fit
+    # self.detected = True
+    # self.recent_fitted.append(fit)
+
+    #画出检测到的曲线，以及的信息
+    #将原始numpy image转换成PIL
+    pil_img=Image.fromarray(img)
+
+
     print('pass')
 
