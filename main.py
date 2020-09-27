@@ -8,8 +8,9 @@ import matplotlib.pyplot as plt
 import time
 def main(imgs):
 
+    #初始化
     #左轨道
-    left_line=line.line()
+    left_line=line.line() #初始化的时候，line.detected=False
     #右轨道
     right_line=line.line()
     #透视变换与逆透视变换

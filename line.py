@@ -35,7 +35,7 @@ def find_line(bird_img):
     # print(histogram)
 
     #找到直方图左右部分的峰值
-    #these will be the strating point for the left and right liines,为什么是左右峰值的起始点？？？
+    #these will be the strating point for the left and right liines,为什么是左右峰值的起始点...？？？...
     #把直方图分成两部分
     midpoint=np.int(histogram.shape[0]/2) #中间点
     #分别返回左右两部分中最大值所在的索引(列索引)
@@ -107,8 +107,45 @@ def find_line(bird_img):
         if len(good_right_inds)>minpix:
             rightx_current=np.int(np.mean(nonzerox[good_right_inds])) #重新赋值右列
 
+        #在for循环里保留了，当前窗口下的good_X_inds
+        #然后更新了当前的搜索列位置
 
+    #concatenate the arrays of indices
+    #默认拼接维度为axis=0
+    #有重复的怎么办 ...???...,(已解决)，有重复的也不怕就是要拟合，相当于在一个二维平面上有很多点，要对这些点拟合成一条曲线
+    left_lane_inds=np.concatenate(left_lane_inds)
+    right_lane_inds=np.concatenate(right_lane_inds)
 
+    #提取位置
+    leftx=nonzerox[left_lane_inds]
+    lefty=nonzeroy[left_lane_inds]
+    rightx=nonzerox[right_lane_inds]
+    righty=nonzeroy[right_lane_inds]
+
+    #利用三阶多项式拟合
+    left_fit=np.polyfit(lefty,leftx,3)
+    right_fit=np.polyfit(righty,rightx,3) #因为y是行，x列
+
+    return left_fit,right_fit,left_lane_inds,right_lane_inds
+
+def find_line_by_previous(bird_img,left_fit,right_fit):
+    """
+    :param bird_img:
+    :param left_fit:
+    :param right_fit:
+    :return:
+    """
+    #返回非零值
+    nonzero=bird_img.nonzero() #tuple
+    nonzeroy=np.array(nonzero[0]) #其实加不加np.array进行转换都行,第几行
+    nonzerox=np.array(nonzero[1]) #第几列
+
+    #设置窗口正负偏差
+    margin=100
+
+    #
+    # left_lane_inds=((nonzerox>le))
+    pass
 
 
 

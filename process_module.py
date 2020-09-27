@@ -18,7 +18,6 @@ def get_M_Minv():
     return M,Minv
 
 
-
 def processing(img,M,Minv,left_line,right_line):
     """
     :param img:
@@ -28,10 +27,12 @@ def processing(img,M,Minv,left_line,right_line):
     :param right_line:
     :return:
     """
+    #首选进行阈值
     threshold_img=thresholding(img)
     # cv2.imshow('thresh img',threshold_img)
     # cv2.waitKey(0)
 
+    #转换到鸟瞰图
     #bird_img=threshold_img_warped
     bird_img=cv2.warpPerspective(threshold_img,M,img.shape[1::-1],flags=cv2.INTER_LINEAR) #[n::-1]的用法是从下标n开始反转读取
     # cv2.namedWindow('bird view img',cv2.WINDOW_NORMAL)
@@ -39,10 +40,12 @@ def processing(img,M,Minv,left_line,right_line):
     # cv2.imwrite('./data_images/bird_view.jpg',bird_img)
     # cv2.waitKey(0)
 
-    # if left_line.detected and right_line.detected:
-    #     pass
-    # else:
-    #     left_fit,right_fit,left_lane_inds,right_lane_inds=find_line(bird_img)
-    # find_line(bird_img)
+    #执行检测
+    #一开始在main中对轨道进行了初始化，初始化的时候 line.detected=False
+    if left_line.detected and right_line.detected:
+        left_fit,right_fit,left_lane_inds,right_lane_inds=find_line_by_previous(bird_img,left_line.current_fit,right_line.current_fit)
+    else:
+        left_fit,right_fit,left_lane_inds,right_lane_inds=find_line(bird_img)
+    find_line(bird_img)
     print('pass')
 
