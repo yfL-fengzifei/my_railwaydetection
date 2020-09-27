@@ -43,6 +43,6 @@ def processing(img,M,Minv,left_line,right_line):
     #     pass
     # else:
     #     left_fit,right_fit,left_lane_inds,right_lane_inds=find_line(bird_img)
-    find_line(bird_img)
+    # find_line(bird_img)
     print('pass')
 

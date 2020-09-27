@@ -49,8 +49,9 @@ def find_line(bird_img):
     window_height=np.int(bird_img.shape[0]/nwindows)
     #identify the x and y positions of all nonzero pixels in the image
     nonzero=bird_img.nonzero() #返回的是非0值的索引,应该是tuple的形式,x索引和y索引
-    nonzeroy=np.array(nonzero[0])
-    nonzeroyx=np.array(nonzero[1])
+    #tuple中的每个元素 中包含的元素数是一样的
+    nonzeroy=np.array(nonzero[0]) #第几行
+    nonzerox=np.array(nonzero[1]) #第几列
 
     #current positions to be based updated for each window
     #把当前 左右直方图中最大最值的索引取出来，前面说是左右线的起始点
@@ -68,20 +69,46 @@ def find_line(bird_img):
     left_lane_inds=[]
     right_lane_inds=[]
 
-    #一个一个的遍历窗口
+    #一个一个的遍历窗口,这里的窗口是沿着图像高度分成几个窗口
     for window in range(nwindows):
-        #窗口边界
+        #定义窗口边界，上下左右
         #窗口的上边界
         win_y_low=bird_img.shape[0]-(window+1)*window_height #虽然是low 但其实是上顶边，因为数小
         #窗口的下边界
         win_y_high=bird_img.shape[0]-window*window_height #虽然是high 但其实是下底边，因为数大
-        #当前最大(列索引下)
-        win_xleft_low=leftx_current-margin
-        win_xleft_high=leftx_current+margin
-        win_xright_low=rightx_current-margin
-        win_xright_high=rightx_current+margin
 
-        #
+        #当前最大(列索引下)
+        #_current为当前峰值的索引
+        #左半线
+        win_xleft_low=leftx_current-margin #左边界
+        win_xleft_high=leftx_current+margin #右边界
+        #右半线
+        win_xright_low=rightx_current-margin #左边界
+        win_xright_high=rightx_current+margin #右边界
+
+        #identify the nonzero pixels in x and y with the window
+        #nonzeroy 为bird_img所有非零元素的索引的y值
+        #计算的是左窗口下满足要求的非零值索引
+        #对应于左轨道
+        good_left_inds=((nonzeroy>=win_y_low)&(nonzeroy<win_y_high)&(nonzerox>=win_xleft_low)&(nonzerox<win_xleft_high)).nonzero()[0] #返回的是ndarray,每个元素对应的是满足要求的索引号
+
+        #计算的是右窗口下满足要求的非零值索引
+        #对应于右轨道
+        good_right_inds=((nonzeroy>=win_y_low)&(nonzeroy<win_y_high)&(nonzerox>=win_xright_low)&(nonzerox<win_xright_high)).nonzero()[0] #返回的是ndarray,值得注意的是ndarray也可以使用len，每个元素对应的是满足要求的索引号
+
+        #将这些索引添加到list中
+        left_lane_inds.append(good_left_inds)
+        right_lane_inds.append(good_right_inds)
+
+        #if you find > minpix pixels, recenter next window on their mean position
+        #当满足条件的时候，重新赋值当前列(左右列)
+        if len(good_left_inds)>minpix:
+            leftx_current=np.int(np.mean(nonzerox[good_left_inds])) #mean求平均值，重新赋值左列
+        if len(good_right_inds)>minpix:
+            rightx_current=np.int(np.mean(nonzerox[good_right_inds])) #重新赋值右列
+
+
+
 
 
 
