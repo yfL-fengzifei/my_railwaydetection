@@ -28,14 +28,16 @@ def find_line(bird_img):
     :param bird_img:
     :return:
     """
-    #在图像的下半部分进行直方图计算
+    #在图像的下半部分进行直方图计算,计算每一列的像素值
+    #好像利用cv2.calcHist不行
     histogram=np.sum(bird_img[bird_img.shape[0]//2:,:],axis=0)//255
+    #除不除以255都无所谓
     # print(histogram)
 
     #找到直方图左右部分的峰值
-    #these will be the strating point for the left and right liines
+    #these will be the strating point for the left and right liines,为什么是左右峰值的起始点？？？
     #把直方图分成两部分
-    midpoint=np.int(histogram.shape[0]/2)
+    midpoint=np.int(histogram.shape[0]/2) #中间点
     #分别返回左右两部分中最大值所在的索引(列索引)
     leftx_base=np.argmax(histogram[:midpoint])
     rightx_base=np.argmax(histogram[midpoint:])+midpoint #argmax返回的是索引
@@ -43,19 +45,20 @@ def find_line(bird_img):
     #选择滑窗的数量
     #根据参考代码，其中应该是沿第一维度(列),即图像的高方向分成几个窗口
     nwindows=9
-    #设置窗口的高度
+    #设置窗口的高度，纵向分成nwindows个窗口
     window_height=np.int(bird_img.shape[0]/nwindows)
     #identify the x and y positions of all nonzero pixels in the image
-    nonzero=bird_img.nonzero() #返回的是非0值的索引
+    nonzero=bird_img.nonzero() #返回的是非0值的索引,应该是tuple的形式,x索引和y索引
     nonzeroy=np.array(nonzero[0])
     nonzeroyx=np.array(nonzero[1])
 
     #current positions to be based updated for each window
-    #把当前 左右直方图中最大最值的索引取出来
+    #把当前 左右直方图中最大最值的索引取出来，前面说是左右线的起始点
     leftx_current=leftx_base
     rightx_current=rightx_base
 
     #set the width the windows +- margin
+    #设置窗口的宽度的正负偏差
     margin=100
 
     #set minimum number of pixels found to recenter window
