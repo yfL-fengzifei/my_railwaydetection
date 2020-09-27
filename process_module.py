@@ -5,6 +5,7 @@ from PIL import Image
 
 from threshold_process import *
 from line import *
+from draw import *
 
 def get_M_Minv():
     """
@@ -38,19 +39,21 @@ def processing(img,M,Minv,left_line,right_line):
     bird_img=cv2.warpPerspective(threshold_img,M,img.shape[1::-1],flags=cv2.INTER_LINEAR) #[n::-1]的用法是从下标n开始反转读取
     # cv2.namedWindow('bird view img',cv2.WINDOW_NORMAL)
     # cv2.imshow('bird view img',bird_img)
-    # cv2.imwrite('./data_images/bird_view.jpg',bird_img)
+    # # cv2.imwrite('./data_images/bird_view.jpg',bird_img)
     # cv2.waitKey(0)
+    # print('pass')
+
 
     #执行检测
     #一开始在main中对轨道进行了初始化，初始化的时候 line.detected=False
     #所以在第一步的时候，直接执行的是else
-    if left_line.detected and right_line.detected:
-        left_fit,right_fit,left_lane_inds,right_lane_inds=find_line_by_previous(bird_img,left_line.current_fit,right_line.current_fit)
-    else:
-        left_fit,right_fit,left_lane_inds,right_lane_inds=find_line(bird_img)
+    # if left_line.detected and right_line.detected:
+    #     left_fit,right_fit,left_lane_inds,right_lane_inds=find_line_by_previous(bird_img,left_line.current_fit,right_line.current_fit)
+    # else:
+    left_fit,right_fit,left_lane_inds,right_lane_inds=find_line(bird_img)
 
     #更新拟合
-    left_line.undate(left_fit)
+    left_line.update(left_fit)
     right_line.update(right_fit)
     #在第一次之后，进行更新
     # self.best_fit = fit
@@ -61,6 +64,9 @@ def processing(img,M,Minv,left_line,right_line):
     #画出检测到的曲线，以及的信息
     #将原始numpy image转换成PIL
     pil_img=Image.fromarray(img)
+    # area_img,gre1=draw_area(pil_img,bird_img,Minv,left_fit,right_fit)
+    draw_area(pil_img,bird_img,Minv,left_fit,right_fit)
+    # pass
 
 
     print('pass')

@@ -137,8 +137,20 @@ import numpy as np
 # # cv2.waitKey(0)
 # hist=cv2.calcHist(src_img,0,mask_img,1,[0,1])
 
-
-
+#=====================================================fillploy
+img=np.zeros((1080,1920,3)).astype(np.uint8)
+# cv2.imshow('img',img)
+# cv2.waitKey(0)
+y=np.linspace(0,img.shape[0]-1,img.shape[0])
+lx=1*y**3+2*y**2+1*y+0
+ly=3*y**3+2*y**2+1*y+0
+l=np.array(np.transpose(np.vstack([lx,y])))
+r=np.array(np.flipud(np.transpose(np.vstack([ly,y]))))
+pts=np.hstack((l,r))
+print(pts)
+cv2.fillPoly(img,np.int_([pts]),(255,255,255))
+cv2.imshow('img',img)
+cv2.waitKey(0)
 
 print('pass')
 

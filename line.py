@@ -53,7 +53,7 @@ def find_line(bird_img):
     """
     #在图像的下半部分进行直方图计算,计算每一列的像素值
     #好像利用cv2.calcHist不行
-    histogram=np.sum(bird_img[bird_img.shape[0]//2:,:],axis=0)//255
+    histogram=np.sum(bird_img[bird_img.shape[0]//2:,:],axis=0)
     #除不除以255都无所谓
     # print(histogram)
 
@@ -144,6 +144,8 @@ def find_line(bird_img):
     lefty=nonzeroy[left_lane_inds]
     rightx=nonzerox[right_lane_inds]
     righty=nonzeroy[right_lane_inds]
+
+    print('pass')
 
     #利用三阶多项式拟合
     left_fit=np.polyfit(lefty,leftx,3)
